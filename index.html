@@ -1,179 +1,365 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quick HTML Encoder</title>
-    <style>
-      body {
-        font-family: 'Courier New', monospace;
-        background-color: #0e0e0e;
-        color: #00ffcc;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-        margin: 0;
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quick HTML Encoder</title>
+  <style>
+    body {
+      font-family: 'Courier New', monospace;
+      background: linear-gradient(135deg, #0e0e0e 60%, #003333 100%);
+      color: #00ffcc;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background: rgba(20, 20, 20, 0.85);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px 0 #00ffcc44;
+      backdrop-filter: blur(6px);
+      border: 1px solid #00ffcc44;
+      padding: 40px 30px 30px 30px;
+      max-width: 600px;
+      width: 95vw;
+      margin: 30px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #00ffcc;
+      text-shadow: 0 0 15px #00ffcc, 0 0 30px #00ffff, 0 0 45px #00ffcc;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: #00ffcc;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    textarea {
+      width: 100%;
+      height: 160px;
+      background: rgba(27, 27, 27, 0.95);
+      border: 2px solid #00ffcc;
+      color: #00ffcc;
+      font-size: 1.1rem;
+      padding: 15px;
+      border-radius: 10px;
+      outline: none;
+      box-shadow: 0 0 15px #00ffcc33;
+      margin-bottom: 15px;
+      resize: vertical;
+      transition: box-shadow 0.2s;
+    }
+
+    textarea:focus {
+      box-shadow: 0 0 20px #00ffcc99;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 1.1rem;
+      border: none;
+      background: linear-gradient(90deg, #00ffcc 60%, #00ff99 100%);
+      color: #0e0e0e;
+      cursor: pointer;
+      border-radius: 8px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      box-shadow: 0 0 20px #00ffcc44;
+      transition: 0.2s;
+      font-weight: bold;
+      outline: none;
+      position: relative;
+    }
+
+    button:active {
+      transform: scale(0.97);
+      box-shadow: 0 0 30px #00ff99;
+    }
+
+    .output-container {
+      margin-top: 10px;
+      width: 100%;
+      text-align: left;
+    }
+
+    .output-label {
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+      color: #00ffcc;
+    }
+
+    .output-url-box {
+      background: rgba(27, 27, 27, 0.95);
+      border: 1px solid #00ffcc88;
+      border-radius: 8px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      word-break: break-all;
+      font-size: 1rem;
+      color: #00ffcc;
+      box-shadow: 0 0 10px #00ffcc22;
+    }
+
+    .copy-icon {
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: #00ffcc;
+      transition: color 0.2s;
+    }
+
+    .copy-icon:hover {
+      color: #00ff99;
+    }
+
+    .message {
+      margin: 8px 0 0 0;
+      font-size: 1rem;
+      color: #00ff99;
+      min-height: 1.2em;
+      text-align: left;
+    }
+
+    .preview-container {
+      margin-top: 18px;
+      width: 100%;
+    }
+
+    .preview-label {
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+      color: #00ffcc;
+    }
+
+    .preview-box {
+      background: rgba(27, 27, 27, 0.95);
+      border: 1px solid #00ffcc88;
+      border-radius: 8px;
+      padding: 12px;
+      min-height: 40px;
+      color: #00ffcc;
+      box-shadow: 0 0 10px #00ffcc22;
+      font-size: 1rem;
+      overflow-x: auto;
+    }
+
+    .toggle-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .toggle-group label {
+      font-size: 1rem;
+      color: #00ffcc;
+      cursor: pointer;
+    }
+
+    .footer {
+      width: 100vw;
+      background: rgba(20, 20, 20, 0.85);
+      border-top: 1px solid #00ffcc44;
+      text-align: center;
+      padding: 18px 0 10px 0;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      font-size: 1rem;
+      color: #00ffcc;
+      text-shadow: 0 0 10px #00ffcc;
+      z-index: 10;
+    }
+
+    .footer span {
+      color: #00ffcc;
+      font-weight: bold;
+      text-shadow: 0 0 10px #00ff99;
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 5px #00ff99, 0 0 10px #00ff99;
       }
 
-      h1 {
-        font-size: 2.5rem;
-        color: #00ffcc;
-        text-shadow: 0 0 15px #00ffcc, 0 0 30px #00ffff, 0 0 45px #00ffcc;
+      to {
+        text-shadow: 0 0 20px #00ff99, 0 0 30px #00ff99;
       }
+    }
 
-      p {
-        font-size: 1.2rem;
-        color: #00ffcc;
+    @media (max-width: 768px) {
+      .card {
+        padding: 18px 6vw 18px 6vw;
       }
 
       textarea {
-        width: 80%;
-        height: 200px;
-        background-color: #1b1b1b;
-        border: 2px solid #00ffcc;
-        color: #00ffcc;
-        font-size: 1.1rem;
-        padding: 15px;
-        border-radius: 10px;
-        outline: none;
-        box-shadow: 0 0 15px #00ffcc;
+        height: 120px;
+      }
+
+      .output-url-box,
+      .preview-box {
+        font-size: 0.95rem;
       }
 
       button {
-        padding: 15px 30px;
-        font-size: 1.2rem;
-        margin: 20px 10px;
-        border: none;
-        background-color: #00ffcc;
-        color: #0e0e0e;
-        cursor: pointer;
-        border-radius: 8px;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        box-shadow: 0 0 20px #00ffcc, 0 0 30px #00ffcc;
-        transition: 0.3s ease;
+        width: 100%;
       }
 
-      button:hover {
-        background-color: #00ff99;
-        box-shadow: 0 0 25px #00ff99, 0 0 50px #00ff99;
+      .footer {
+        font-size: 0.95rem;
+        padding: 12px 0 8px 0;
       }
+    }
+  </style>
+</head>
 
-      .output-container {
-        margin-top: 30px;
-        font-size: 1.5rem;
-      }
-
-      a {
-        display: inline-block;
-        margin-top: 10px;
-        color: #00ffcc;
-        font-weight: bold;
-        font-size: 1.3rem;
-        text-decoration: none;
-        text-shadow: 0 0 10px #00ffcc;
-        transition: 0.3s ease;
-      }
-
-      a:hover {
-        color: #00ff99;
-        text-shadow: 0 0 20px #00ff99;
-      }
-
-      textarea:focus {
-        box-shadow: 0 0 20px #00ffcc;
-      }
-
-      /* Credits */
-      .credits {
-        position: absolute;
-        bottom: 10px;
-        font-size: 1rem;
-        color: #00ffcc;
-        text-shadow: 0 0 10px #00ffcc;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .credits span {
-        color: #00ffcc;
-        font-weight: bold;
-        text-shadow: 0 0 10px #00ff99;
-        animation: glow 2s infinite alternate;
-      }
-
-      @keyframes glow {
-        from {
-          text-shadow: 0 0 5px #00ff99, 0 0 10px #00ff99;
-        }
-        to {
-          text-shadow: 0 0 20px #00ff99, 0 0 30px #00ff99;
-        }
-      }
-
-      @media (max-width: 768px) {
-        textarea {
-          width: 90%;
-        }
-
-        button {
-          width: 80%;
-          margin: 10px 0;
-        }
-      }
-    </style>
-  </head>
-  <body>
+<body>
+  <div class="card">
     <h1>Quick HTML Encoder</h1>
-    <p>Enter some HTML code to be encoded as a URL:</p>
+    <p>Enter HTML code to encode as a URL. <br>Preview the decoded HTML below!</p>
+    <div class="toggle-group">
+      <input type="checkbox" id="live-encode" checked>
+      <label for="live-encode">Live Encode</label>
+    </div>
     <textarea id="input" placeholder="Enter your HTML code here..."></textarea>
-    <div>
-      <button onclick="encodeInput()">Encode</button>
-      <button onclick="copyToClipboard()">Copy URL</button>
+    <div class="btn-group">
+      <button onclick="encodeInput()">Encode & Shorten</button>
+      <button onclick="decodeInput()">Decode URL</button>
+      <button onclick="clearAll()">Clear</button>
     </div>
     <div class="output-container">
-      <p>Retejo URL:</p>
-      <a target="_blank" id="output">Your encoded URL will appear here</a>
+      <div class="output-label">Shortened URL:</div>
+      <div class="output-url-box">
+        <a target="_blank" id="output" href="#">Your shortened URL will appear here</a>
+        <span class="copy-icon" title="Copy URL" onclick="copyToClipboard()">📋</span>
+      </div>
+      <div class="message" id="message"></div>
     </div>
-
-    <!-- Credits Section -->
-    <p>Crafted with 💻 & ⚡ by 
+    <div class="preview-container">
+      <div class="preview-label">Decoded HTML Preview:</div>
+      <div class="preview-box" id="preview"></div>
+    </div>
+  </div>
+  <!-- Footer Credits -->
+  <footer class="footer">
+    Crafted with 💻 & ⚡ by
     <a href="https://github.com/Quicksilver-lab" target="_blank">
-    <span>QuickSilver</span>
+      <span>QuickSilver</span>
     </a>
-    </p>
+  </footer>
+  <script>
+    const inputEl = document.getElementById("input");
+    const outputEl = document.getElementById("output");
+    const messageEl = document.getElementById("message");
+    const previewEl = document.getElementById("preview");
+    const liveEncodeEl = document.getElementById("live-encode");
 
+    let lastEncodedUrl = ""; // Store last full encoded URL for decoding
 
-    <script>
-      function encodeInput() {
-        const input = document.getElementById("input").value.trim();
-        const output = document.getElementById("output");
-
-        if (!input) {
-          alert("Please enter some HTML code to encode.");
-          return;
-        }
-
-        try {
-          const encoded = encodeURIComponent(btoa(input));
-          output.href = "https://retejo.cedoor.dev/?" + encoded;
-          output.innerHTML = "Click me to open your encoded URL!";
-        } catch (error) {
-          alert("Error encoding the HTML. Please try again.");
-        }
+    async function encodeInput() {
+      const input = inputEl.value.trim();
+      if (!input) {
+        showMessage("Please enter some HTML code to encode.", true);
+        outputEl.href = "#";
+        outputEl.innerHTML = "Your encoded URL will appear here";
+        previewEl.innerHTML = "";
+        lastEncodedUrl = "";
+        return;
       }
-
-      function copyToClipboard() {
-        const output = document.getElementById("output").href;
-        navigator.clipboard.writeText(output).then(() => {
-          alert("URL copied to clipboard!");
-        }).catch(err => {
-          alert("Failed to copy the URL. Please try again.");
-        });
+      try {
+        const encoded = encodeURIComponent(btoa(input));
+        const fullUrl = "https://retejo.cedoor.dev/?" + encoded;
+        lastEncodedUrl = fullUrl;
+        outputEl.href = fullUrl;
+        outputEl.innerHTML = fullUrl;
+        showMessage("Encoding successful!", false);
+        previewEl.innerHTML = input;
+      } catch (error) {
+        showMessage("Error encoding the HTML.", true);
+        outputEl.href = "#";
+        outputEl.innerHTML = "Your encoded URL will appear here";
       }
-    </script>
-  </body>
+    }
+
+    function copyToClipboard() {
+      const url = outputEl.href;
+      if (!url || url === "#") {
+        showMessage("No URL to copy.", true);
+        return;
+      }
+      navigator.clipboard.writeText(url).then(() => {
+        showMessage("URL copied to clipboard!", false);
+      }).catch(() => {
+        showMessage("Failed to copy the URL.", true);
+      });
+    }
+
+    function showMessage(msg, isError) {
+      messageEl.textContent = msg;
+      messageEl.style.color = isError ? "#ff6666" : "#00ff99";
+    }
+
+    function clearAll() {
+      inputEl.value = "";
+      outputEl.href = "#";
+      outputEl.innerHTML = "Your shortened URL will appear here";
+      previewEl.innerHTML = "";
+      showMessage("", false);
+      lastEncodedUrl = "";
+    }
+
+    function decodeInput() {
+      // Use lastEncodedUrl for decoding
+      const url = lastEncodedUrl;
+      if (!url || url === "#" || !url.includes("?")) {
+        showMessage("No valid encoded URL to decode.", true);
+        return;
+      }
+      try {
+        const encoded = url.split("?")[1];
+        const decoded = atob(decodeURIComponent(encoded));
+        previewEl.innerHTML = decoded;
+        showMessage("Decoded successfully!", false);
+      } catch (error) {
+        showMessage("Error decoding the URL.", true);
+      }
+    }
+
+    // Live encode as you type
+    inputEl.addEventListener("input", () => {
+      if (liveEncodeEl.checked) encodeInput();
+    });
+    liveEncodeEl.addEventListener("change", () => {
+      if (liveEncodeEl.checked) encodeInput();
+    });
+
+    // Initial preview
+    previewEl.innerHTML = "";
+  </script>
+</body>
+
 </html>
